@@ -24,11 +24,11 @@ import (
 	"runtime"
 	"time"
 
-	"golang.org/x/mobile/event/lifecycle"
-	"golang.org/x/mobile/event/paint"
-	"golang.org/x/mobile/event/size"
-	"golang.org/x/mobile/event/touch"
-	"golang.org/x/mobile/geom"
+	"github.com/shranet/mobile/event/lifecycle"
+	"github.com/shranet/mobile/event/paint"
+	"github.com/shranet/mobile/event/size"
+	"github.com/shranet/mobile/event/touch"
+	"github.com/shranet/mobile/geom"
 )
 
 func init() {

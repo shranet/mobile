@@ -11,13 +11,13 @@ import (
 	"log"
 	"net"
 
-	"golang.org/x/mobile/app"
-	"golang.org/x/mobile/app/internal/apptest"
-	"golang.org/x/mobile/event/lifecycle"
-	"golang.org/x/mobile/event/paint"
-	"golang.org/x/mobile/event/size"
-	"golang.org/x/mobile/event/touch"
-	"golang.org/x/mobile/gl"
+	"github.com/shranet/mobile/app"
+	"github.com/shranet/mobile/app/internal/apptest"
+	"github.com/shranet/mobile/event/lifecycle"
+	"github.com/shranet/mobile/event/paint"
+	"github.com/shranet/mobile/event/size"
+	"github.com/shranet/mobile/event/touch"
+	"github.com/shranet/mobile/gl"
 )
 
 func main() {
