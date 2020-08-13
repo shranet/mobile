@@ -41,9 +41,9 @@ public class WViewActivity extends Activity {
         // to enable javascripts
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        webView.getSettings().setBuiltInZoomControls(true);
+//         webView.getSettings().setBuiltInZoomControls(true);
         // zoom if you want
-        webView.getSettings().setSupportZoom(true);
+//         webView.getSettings().setSupportZoom(true);
         // to support url redirections
         webView.setWebViewClient(new WebViewClient());
         // extra settings
