@@ -101,6 +101,11 @@ func callMain(mainPC uintptr) {
 	go callfn.CallFn(mainPC)
 }
 
+//export callFunc
+func callFunc(fn uintptr) {
+	go callfn.CallFn(fn)
+}
+
 //export onStart
 func onStart(activity *C.ANativeActivity) {
 }

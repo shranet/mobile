@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.widget.Toast;
+import android.provider.Settings.Secure;
+import android.content.Intent;
 
 public class GoNativeActivity extends NativeActivity {
 	private static GoNativeActivity goNativeActivity;
@@ -18,36 +20,21 @@ public class GoNativeActivity extends NativeActivity {
 	public GoNativeActivity() {
 		super();
 		goNativeActivity = this;
-
-		AlertDialog alertDialog = new AlertDialog.Builder(this)
-		//set icon 
-		.setIcon(android.R.drawable.ic_dialog_alert)
-		//set title
-		.setTitle("Are you sure to Exit")
-		//set message
-		.setMessage("Exiting will call finish() method")
-		//set positive button
-		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {
-				//set what would happen when positive button is clicked    
-				finish();
-			}
-		})
-		//set negative button
-		.setNegativeButton("No", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {
-				//set what should happen when negative button is clicked
-				Toast.makeText(getApplicationContext(),"Nothing Happened",Toast.LENGTH_LONG).show();
-			}
-		})
-		.show();
 	}
 
 	String getTmpdir() {
 		return getCacheDir().getAbsolutePath();
 	}
+
+	String getAssetsPath() {
+	    Log.d("Go", "GoNativeActivity getAssetsPath");
+		return getFilesDir().getAbsolutePath();
+    }
+
+    String getAndroidId() {
+        Log.d("Go", "GoNativeActivity getAndroidId");
+        return Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID);
+    }
 
 	static int getRune(int deviceId, int keyCode, int metaState) {
 		try {
@@ -65,31 +52,34 @@ public class GoNativeActivity extends NativeActivity {
 	}
 
 	private void load() {
-		// Interestingly, NativeActivity uses a different method
-		// to find native code to execute, avoiding
-		// System.loadLibrary. The result is Java methods
-		// implemented in C with JNIEXPORT (and JNI_OnLoad) are not
-		// available unless an explicit call to System.loadLibrary
-		// is done. So we do it here, borrowing the name of the
-		// library from the same AndroidManifest.xml metadata used
-		// by NativeActivity.
-		try {
-			ActivityInfo ai = getPackageManager().getActivityInfo(
-					getIntent().getComponent(), PackageManager.GET_META_DATA);
-			if (ai.metaData == null) {
-				Log.e("Go", "loadLibrary: no manifest metadata found");
-				return;
-			}
-			String libName = ai.metaData.getString("android.app.lib_name");
-			System.loadLibrary(libName);
-		} catch (Exception e) {
-			Log.e("Go", "loadLibrary failed", e);
-		}
-	}
+        // Interestingly, NativeActivity uses a different method
+        // to find native code to execute, avoiding
+        // System.loadLibrary. The result is Java methods
+        // implemented in C with JNIEXPORT (and JNI_OnLoad) are not
+        // available unless an explicit call to System.loadLibrary
+        // is done. So we do it here, borrowing the name of the
+        // library from the same AndroidManifest.xml metadata used
+        // by NativeActivity.
+        try {
+            ActivityInfo ai = getPackageManager().getActivityInfo(
+                    getIntent().getComponent(), PackageManager.GET_META_DATA);
+            if (ai.metaData == null) {
+                Log.e("Go", "loadLibrary: no manifest metadata found");
+                return;
+            }
+            String libName = ai.metaData.getString("android.app.lib_name");
+            System.loadLibrary(libName);
+        } catch (Exception e) {
+            Log.e("Go", "loadLibrary failed", e);
+        }
+    }
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		load();
+        load();
 		super.onCreate(savedInstanceState);
+
+		Intent intent = new Intent("org.golang.app.MyService");
+        this.startService(intent);
 	}
 }

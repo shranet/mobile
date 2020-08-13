@@ -8,56 +8,58 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
 import java.util.concurrent.TimeUnit;
-import org.xwalk.core.XWalkView;
 import android.widget.LinearLayout;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.content.pm.ActivityInfo;
+import android.webkit.WebView;
+import android.graphics.Color;
+import android.widget.RelativeLayout;
+import android.webkit.WebViewClient;
+import android.os.Build;
+import android.webkit.WebSettings;
+import android.util.Log;
 
 public class WViewActivity extends Activity {
-
-	static {
-		try {
-			System.loadLibrary("xwalkcore");
-		} catch (UnsatisfiedLinkError e) {
-			System.err.println("xwalkcore code library failed to load 02.\n" + e);
-			System.exit(1);
-		}
-		Log.d("Go", "xwalkcore loaded");
-
-		try {
-			System.loadLibrary("xwalkdummy");
-		} catch (UnsatisfiedLinkError e) {
-			System.err.println("xwalkdummy code library failed to load 03.\n" + e);
-			System.exit(1);
-		}
-		Log.d("Go", "xwalkdummy loaded");
-	}
-
-	private LinearLayout commentsLayout;
-	private XWalkView mXWalkView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//Fixed Portrait orientation
+        Log.d("Go", "WViewActivity start");
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+// 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+// 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		Log.d("Go", "WViewActivity onCreate");
-		setContentView(R.layout.activity_xwalk_embed_lib);
-		commentsLayout=(LinearLayout)findViewById(R.id.principal);
-		mXWalkView = new XWalkView(this, this);
-		//final String html = "<html><body bgcolor=\"#090998\"><h1>Hello world!</h1></body></html>";
-		mXWalkView.load("http://localhost:8558", null);
-		commentsLayout.addView(mXWalkView);
+        WebView webView = new WebView(this);
 
-		Log.d("Go", "mXWalkView ok");
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+        webView.setLayoutParams(params);
+        webView.setBackgroundColor(Color.WHITE);
+        // to enable javascripts
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        // zoom if you want
+        webView.getSettings().setSupportZoom(true);
+        // to support url redirections
+        webView.setWebViewClient(new WebViewClient());
+        // extra settings
+        webView.getSettings().setLoadWithOverviewMode(false);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.setScrollContainer(true);
+        // setting for lollipop and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
+        webView.loadUrl("http://127.0.0.1:8558");
+
+        Log.d("Go", "WViewActivity end");
+        setContentView(webView);
     }
 
     protected void onStart(Bundle savedInstanceState) {

@@ -198,3 +198,14 @@ int32_t getKeyRune(JNIEnv* env, AInputEvent* e) {
 		AKeyEvent_getMetaState(e)
 	);
 }
+
+//JNIEXPORT void JNICALL Java_org_golang_app_MyService_printText(JNIEnv *env, jobject thisObj) {
+//    uintptr_t mainRunServer = (uintptr_t)dlsym(RTLD_DEFAULT, "main.PrintText");
+//    if (!mainRunServer) {
+//        LOG_INFO("Go: missing main.PrintText");
+//        return;
+//    }
+//
+//    callFunc(mainRunServer);
+//    return;
+//}
