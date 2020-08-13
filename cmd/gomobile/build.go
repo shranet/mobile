@@ -149,7 +149,8 @@ func runBuildImpl(cmd *command) (*packages.Package, error) {
 	}
 
 	if !nmpkgs["github.com/shranet/mobile/app"] {
-		return nil, fmt.Errorf(`%s does not import "github.com/shranet/mobile/app"`, pkg.PkgPath)
+		//fmt.Errorf("Skip error")
+		//return nil, fmt.Errorf(`%s does not import "github.com/shranet/mobile/app"`, pkg.PkgPath)
 	}
 
 	return pkg, nil
