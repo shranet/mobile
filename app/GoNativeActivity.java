@@ -13,6 +13,7 @@ import android.view.KeyCharacterMap;
 import android.widget.Toast;
 import android.provider.Settings.Secure;
 import android.content.Intent;
+import android.os.SystemClock;
 
 public class GoNativeActivity extends NativeActivity {
 	private static GoNativeActivity goNativeActivity;
@@ -79,7 +80,17 @@ public class GoNativeActivity extends NativeActivity {
         load();
 		super.onCreate(savedInstanceState);
 
-		Intent intent = new Intent("org.golang.app.MyService");
-        this.startService(intent);
+// 		Intent intent = new Intent("org.golang.app.MyService");
+//         this.startService(intent);
+
+        new Thread(new Runnable() {
+            public void run() {
+                SystemClock.sleep(3000);
+
+                final Intent dialogIntent = new Intent(getApplicationContext(), WViewActivity.class);
+                dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(dialogIntent);
+            }
+          }).start();
 	}
 }

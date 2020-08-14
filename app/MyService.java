@@ -26,18 +26,6 @@ public class MyService extends Service  {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("Go", "MyService onStartCommand");
 
-
-        new Thread(new Runnable() {
-            public void run() {
-                SystemClock.sleep(3000);
-
-                final Intent dialogIntent = new Intent(getApplicationContext(), WViewActivity.class);
-                dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(dialogIntent);
-
-                stopSelf();
-            }
-          }).start();
         return super.onStartCommand(intent, flags, startId);
     }
 
